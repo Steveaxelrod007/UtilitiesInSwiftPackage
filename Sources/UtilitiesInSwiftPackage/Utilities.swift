@@ -4,7 +4,7 @@ import UIKit
 import UserNotifications
 import UserNotificationsUI
 
-public func memoryUsage() -> String {
+public func UISmemoryUsage() -> String {
     var taskInfo = task_vm_info_data_t()
     var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
     let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
@@ -23,14 +23,14 @@ public func memoryUsage() -> String {
     let bytesInMegabyte = 1024.0 * 1024.0
     let usedMemory = Double(used) / bytesInMegabyte
     let totalMemory = Double(total) / bytesInMegabyte
-    return String(format: "%.1f of %.0f MB used", usedMemory, totalMemory)
+    return String(format: "%.1f of %@MB used", usedMemory, Int(totalMemory).fullNotation())
 }
 
-public func shutOffAllLocalNotifications() {
+public func UISshutOffAllLocalNotifications() {
     UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 }
 
-public func sendLocalAlert(delaySeconds: Int) {
+public func UISsendLocalAlert(delaySeconds: Int) {
     let center = UNUserNotificationCenter.current()
     center.requestAuthorization(options: [.alert, .sound]) { _, _ in
         let content = UNMutableNotificationContent()
@@ -48,7 +48,7 @@ public func sendLocalAlert(delaySeconds: Int) {
     }
 }
 
-public func loadURLdisplayInWeb(vc: UIViewController, url: String) {
+public func UISloadURLdisplayInWeb(vc: UIViewController, url: String) {
     guard let url = URL(string: url) else { return }
 
     let safari = SFSafariViewController(url: url)
@@ -56,24 +56,24 @@ public func loadURLdisplayInWeb(vc: UIViewController, url: String) {
     vc.present(safari, animated: true, completion: nil)
 }
 
-public func vibrate() {
+public func UISvibrate() {
     let generator = UIImpactFeedbackGenerator(style: .heavy)
     generator.impactOccurred()
 }
 
-public func DebugPrint(_ msg: String) {
+public func UISDebugPrint(_ msg: String) {
     print("\(Date().timeIntervalSince1970) -> \(msg)")
 }
 
-public func PostNote(name: NSNotification.Name) {
+public func UISPostNote(name: NSNotification.Name) {
     NotificationCenter.default.post(name: name, object: nil)
 }
 
-public func DEINIT(val: AnyObject) {
-    DebugPrint("****** deinit \(String(describing: type(of: val)))")
+public func UISDEINIT(val: AnyObject) {
+    UISDebugPrint("****** deinit \(String(describing: type(of: val)))")
 }
 
-public func generateSecureCode(size: Int, onlyLetters: Bool = false) -> String {
+public func UISgenerateSecureCode(size: Int, onlyLetters: Bool = false) -> String {
     let lower = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
     let upper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     let symbols = ["!", "@", "#", "$", "%", "^", "*", "-", "+", "="]

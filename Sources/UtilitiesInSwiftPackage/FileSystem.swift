@@ -1,13 +1,18 @@
 import Foundation
 
 public class FileSystem {
-    public class func availableDeviceSpace() -> NSNumber {
+    public class func availableDeviceSpace() -> (NSNumber, String) {
         if let dict = try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()) {
             if let freespace = dict[FileAttributeKey.systemFreeSize] as? NSNumber {
-                return freespace
+            let numberFormatter = NumberFormatter()
+            numberFormatter.locale = NSLocale.current
+            numberFormatter.numberStyle = .decimal
+            numberFormatter.usesGroupingSeparator = true
+
+            return (freespace, numberFormatter.string(from: freespace) ?? "")
             }
         }
-        return 0
+        return (0, "")
     }
 
     public class func removeALLfilesInTempDirectory() {
