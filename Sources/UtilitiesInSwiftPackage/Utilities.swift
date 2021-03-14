@@ -1,8 +1,6 @@
 import Foundation
 import SafariServices
 import UIKit
-import UserNotifications
-import UserNotificationsUI
 
 public func UISmemoryUsage() -> String {
     var taskInfo = task_vm_info_data_t()
@@ -24,28 +22,6 @@ public func UISmemoryUsage() -> String {
     let usedMemory = Double(used) / bytesInMegabyte
     let totalMemory = Double(total) / bytesInMegabyte
     return String(format: "%.1f of %@MB used", usedMemory, Int(totalMemory).fullNotation())
-}
-
-public func UISshutOffAllLocalNotifications() {
-    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-}
-
-public func UISsendLocalAlert(delaySeconds: Int) {
-    let center = UNUserNotificationCenter.current()
-    center.requestAuthorization(options: [.alert, .sound]) { _, _ in
-        let content = UNMutableNotificationContent()
-        content.title = "SafetyNet"
-        content.subtitle = "Emergency Alert"
-        content.body = "Your emergency alert will go out in one minute."
-        content.sound = UNNotificationSound.default
-
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(delaySeconds > 0 ? delaySeconds : 1), repeats: false)
-        let request = UNNotificationRequest(identifier: "vss", content: content, trigger: trigger)
-
-        UNUserNotificationCenter.current().add(request) { error in
-            print(error?.localizedDescription ?? "***")
-        }
-    }
 }
 
 public func UISloadURLdisplayInWeb(vc: UIViewController, url: String) {
